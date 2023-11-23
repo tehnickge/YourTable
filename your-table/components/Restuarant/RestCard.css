@@ -1,0 +1,7 @@
+.card-restaurant {
+    width: 33.33%;
+    border-radius: 1rem;
+    margin-top: 4rem;
+    border: 2px;
+    background-color: gray;
+}
