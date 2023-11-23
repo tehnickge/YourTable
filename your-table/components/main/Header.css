@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+
+.header__container_link {
+    width: auto;
+}
+
+.header__container_link a {
+    margin: 2rem;
+}
+
+.header__container_menu {
+    width: auto;
+}
+
+.header__container_menu a {
+    margin: 2rem;
+}

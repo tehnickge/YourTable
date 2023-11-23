@@ -1,0 +1,21 @@
+.search-input {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 3rem;
+}
+
+.search-input__input {
+    padding-left: 12px;
+    background-color: transparent;
+    border-radius: 2rem;
+    border: 0.2rem solid white;
+    outline: none;
+
+}
+
+input:focus {
+    background-color: red;
+}
+input:hover {
+    background-color: purple;
+}
