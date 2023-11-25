@@ -7,6 +7,7 @@ export default function RestCard(props: any) {
 
   return (
     <div className="card-restaurant">
+      <Link href={`restaurants/${props.id}`}>
       <label>id {props.id}</label>
       <div className="card-restaurant__photos">
         <image>Image</image>
@@ -15,6 +16,7 @@ export default function RestCard(props: any) {
         <label>Name</label>
       </div>
       <RestCardInfo></RestCardInfo>
+      </Link>
     </div>
   );
 }

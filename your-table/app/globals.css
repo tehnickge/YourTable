@@ -24,17 +24,9 @@ body, html {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  position: relative;
-
-}
-
-.main_container {
-  position: relative;
+  width: 100%;
   height: 100%;
-  min-width: 100%;
-  padding-top: 16px;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  
-  
+  position: relative;
+
 }
+

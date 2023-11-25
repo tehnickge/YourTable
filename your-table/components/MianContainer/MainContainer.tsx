@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import "./MainContainer.css"
 
 
 export default function MainContainer({children,} : PropsWithChildren) {
