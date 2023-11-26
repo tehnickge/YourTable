@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header/Header";
 import MainContainer from "@/components/MianContainer/MainContainer";
-import { ChakraProvider } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
   title: "Search restaurant",
@@ -18,12 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-
-          <Header></Header>
-          <MainContainer>
-            {children}
-          </MainContainer>
-
+        <Header></Header>
+        <MainContainer>
+          {children}
+        </MainContainer>
       </body>
     </html>
   );

@@ -1,11 +1,17 @@
 "use client"
 import { usePathname } from "next/navigation";
 
-export default function User() {
+type Props = {
+    params: {
+        id: string
+    }
+}
+
+export default function User({ params: { id } } : Props) {
 
     return (
         <div>
-            {`user ${(usePathname().split('/'))[2]}`}
+            {`user ${id}`}
         </div>
     )
 }

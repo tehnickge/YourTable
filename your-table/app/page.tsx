@@ -3,10 +3,31 @@ import RestContainer from "@/components/Restuarant/RestContainer";
 import SearchInput from "@/components/Search/SearchInput";
 
 
+interface restaurant 
+{
+  id: string,
+  name: string,
+  photos: string,
+  address: string,
+  kitchen: string,
+  stars: number,
+}
 
-let restaurant: {id: Date, name: string, photo: string, address: string, kitchen: string}
+type restaurants =
+{
+  restaurants: restaurant[];
+}
 
-let arr = [1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+let rest : restaurant = {
+  id: Date.now().toString(),
+  name: "aboba",
+  photos: "/aboba.jpg",
+  address: "address",
+  kitchen: "russian",
+  stars: 0
+}
+
+let arr = [1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
 
 export default function Home() {
 
