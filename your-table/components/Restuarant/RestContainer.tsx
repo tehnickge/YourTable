@@ -1,5 +1,3 @@
-import { PropsWithChildren } from "react";
-import "./RestContainer.css";
 import RestCard from "./RestCard";
 
 export default function RestContainer(props:any ) {

@@ -1,12 +1,11 @@
 import Link from "next/link";
-import "./RestCard.css"
 import RestCardInfo from "./RestCardInfo";
 
 export default function RestCard(props: any) {
 
 
   return (
-    <div className="card-restaurant">
+    <div className="card-restaurant ">
       <Link href={`restaurants/${props.id}`}>
       <label>id {props.id}</label>
       <div className="card-restaurant__photos">

@@ -1,7 +1,6 @@
 "use client"
 
 import { useSearchInput } from "../store/store";
-import "./SearchInput.css"
 
 export default function SearchInput(props:any) {
 

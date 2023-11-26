@@ -2,7 +2,6 @@ import MainContainer from "@/components/MianContainer/MainContainer";
 import RestContainer from "@/components/Restuarant/RestContainer";
 import SearchInput from "@/components/Search/SearchInput";
 
-
 interface restaurant 
 {
   id: string,
