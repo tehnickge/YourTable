@@ -13,11 +13,13 @@ export const useSearchInput = create((set) =>({
     filterCity: "",
     filterStars: 0,
 
-    setFilterKitchens: (data: any) => set((state: any) => {
+    addFilterKitchens: (data: any) => set((state: any) => {
         return {filterKitchens: [...state.filterKitchens, data]}
     }),
     deleteFilterKitchens: (data: any) => set((state : any) => {
-        return {filterKitchens: [...state.filterKitchens.pop(data)]}
+        let newState = state.filterKitchens;
+        newState.pop(data);
+        return {filterKitchens: [...newState]}
     }),
 
     setFilterCity: (city: string) => set((state: any) => {
