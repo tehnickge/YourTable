@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header/Header";
-import MainContainer from "@/components/MianContainer/MainContainer";
+import MainContainer from "@/components/MainContainer/MainContainer";
 
 export const metadata: Metadata = {
   title: "Search restaurant",

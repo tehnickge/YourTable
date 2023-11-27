@@ -1,5 +1,5 @@
-import MainContainer from "@/components/MianContainer/MainContainer";
-import RestContainer from "@/components/Restuarant/RestContainer";
+import MainContainer from "@/components/MainContainer/MainContainer";
+import RestContainer from "@/components/Restaurant/RestContainer";
 import SearchInput from "@/components/Search/SearchInput";
 
 interface restaurant 
