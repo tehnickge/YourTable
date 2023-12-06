@@ -1,17 +1,26 @@
-"use client"
+"use client";
+import MainContainer from "@/components/MainContainer/MainContainer";
 import { usePathname } from "next/navigation";
 
 type Props = {
-    params: {
-        id: string
-    }
-}
+  params: {
+    id: string;
+  };
+};
 
-export default function User({ params: { id } } : Props) {
-
-    return (
+export default function User({ params: { id } }: Props) {
+  return (
+    <MainContainer>
+      <div className="">
         <div>
-            {`user ${id}`}
+          <div className="mx-10 my-5">
+            <div className="bg-yellow-500 text-orange-700 h-56 w-56 rounded-full ">
+              <image>asd</image>
+            </div>
+          </div>
+          <label>вы:{`user ${id}`}</label>
         </div>
-    )
+      </div>
+    </MainContainer>
+  );
 }

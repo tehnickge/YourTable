@@ -1,6 +1,6 @@
 "use client"
 
-import { useSearchInput } from "../store/store";
+import { useSearchInput } from "../store/StoreSearch";
 
 export default function SearchInput(props:any) {
 
@@ -36,8 +36,8 @@ export default function SearchInput(props:any) {
   console.log(searchInput);
   console.log(filterStars);
   return (
-    <div className="search-input">
-      <input className="search-input__input" 
+    <div className="search-input bg-gray-700 text-white">
+      <input className="search-input__input mx-10 my-4 w-11/12" 
       type="text" 
       onChange={SearchChangeHandler}></input>
       <button onClick={ButtonChangeHandler}>a1</button>
