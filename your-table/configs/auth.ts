@@ -23,14 +23,15 @@ export const authOptions : AuthOptions = {
                 },
                 password: { 
                     label: "Password",
-                    type: "password"
-                }
+                    type: "password",
+                    placeholder: "enter your password"
+                },
             },
             async authorize(credentials, req) {
                 //tut budet vzaimodestvie s bd 
                 // Add logic here to look up the user from the credentials supplied
                 const user = { id: "1", name: "tehnick", password: "123"}
-                if (user) {
+                if (credentials?.username === user.name && credentials?.password === user.password) {
                     // Any object returned will be saved in `user` property of the JWT
                     return user
                   } else {
