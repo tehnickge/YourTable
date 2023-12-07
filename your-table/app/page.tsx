@@ -1,6 +1,8 @@
+
 import MainContainer from "@/components/MainContainer/MainContainer";
 import RestContainer from "@/components/Restaurant/RestContainer";
 import SearchInput from "@/components/Search/SearchInput";
+import { SessionProvider } from "next-auth/react"
 
 interface restaurant {
   id: string;
@@ -34,7 +36,7 @@ export default function Home() {
   return (
     <div className="">
       <SearchInput />
-      <MainContainer>
+        <MainContainer>
         <RestContainer restData={arr} />
       </MainContainer>
     </div>
