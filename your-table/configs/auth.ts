@@ -14,7 +14,7 @@ export const authOptions : AuthOptions = {
             clientSecret: process.env.GITHUB_SECRET!
           }),
           CredentialsProvider({
-            name: "Credentials",
+            name: "Your-Table",
             credentials: {
                 username: {
                     label: "Username:",
