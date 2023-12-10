@@ -31,13 +31,9 @@ export const authOptions : AuthOptions = {
                 },
             },
             async authorize(credentials, req) {
-                const user : any = await executeQuery(`select users.id, name, password, type 
-                from users join user_types on users.user_type_fk = user_types.id
-                where name = "${credentials?.username}" 
-                and password = "${credentials?.password}"`,[]);
+                const user : any = await fetch(`http://localhost:3000/api/users?username=${credentials?.username}&password=${credentials?.password}`);
                 //tut budet vzaimodestvie s bd 
                 // Add logic here to look up the user from the credentials supplied
-
                 if (
                   credentials?.username === user[0]?.name && 
                   credentials?.password === user[0]?.password ) {
