@@ -13,9 +13,7 @@ export async function GET(req: Request) {
     rs.photos arrPhotos,
     rs.address,
     type_kitchen.type as typeKitchen,
-    GROUP_CONCAT(days.title," ",work_schedules.time_begin," ",work_schedules.time_end) as schedules,
-	GROUP_CONCAT(work_schedules.time_begin) as timeBegin,
-    GROUP_CONCAT(work_schedules.time_end) as timeEnd
+    GROUP_CONCAT(days.title," ",work_schedules.time_begin," ",work_schedules.time_end) as schedules
     from restaurants as rs 
         left join kitchen_list on kitchen_list_fk = rs.id
         left join type_kitchen on type_kitchen.id = kitchen_list.kitchen_type_fk
@@ -25,22 +23,22 @@ export async function GET(req: Request) {
         left join days on work_schedules.day_fk = days.id
 	        group by rs.id,type_kitchen.id,chain_restaurants.id`, [])
     
-    res.map((item : any) => {
+    console.log(res[0]);
+    res.forEach((item : any) => {
         if(item.schedules) { 
-            console.log((item?.schedules.split(","))); 
             item.schedules = item?.schedules.split(",")
-            let aboba : Array<any>;
-            item.schedules.map((el : any) => {
-                console.log(")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))");
-                let aboba = el.split(' ');
-                console.log(aboba)
-            });
+            for(let i = 0; i < item.schedules.length; i++)
+            {
+                let tmpSh = item.schedules[i].split(' ');
+                item.schedules[i] = {
+                    day: tmpSh[0],
+                    timeStart: tmpSh[1],
+                    timeEnd: tmpSh[2]
+                }
+            }
         }
     });
-
-    res.map((item :any ) => {
-    })
-
+    
 
     return NextResponse.json(res);
 }
