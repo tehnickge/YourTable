@@ -5,7 +5,6 @@ import HeaderLinkContainer from "./HeaderLinkContainer";
 export default function Header() {
   const links = [
     { name: "search", href: "/" },
-    { name: "acc", href: "/" },
     { name: "home", href: "/home" },
   ];
 

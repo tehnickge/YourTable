@@ -1,6 +1,6 @@
 "use client";
 import MainContainer from "@/components/MainContainer/MainContainer";
-import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 type Props = {
   params: {
@@ -9,8 +9,11 @@ type Props = {
 };
 
 export default function User({ params: { id } }: Props) {
+  
+  const session = useSession();
+  console.log(session);
   return (
-    <MainContainer>
+    <MainContainer> 
       <div className="">
         <div>
           <div className="mx-10 my-5">
@@ -20,7 +23,7 @@ export default function User({ params: { id } }: Props) {
           </div>
           <label>вы:{`user ${id}`}</label>
         </div>
-      </div>
+      </div>    
     </MainContainer>
   );
 }

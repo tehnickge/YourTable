@@ -1,4 +1,4 @@
-import executeQuery from "../api/users/users";
+import executeQuery from "../api/users/bd";
 
 
 export default async function Home() {

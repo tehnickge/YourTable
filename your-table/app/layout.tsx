@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header/Header";
 import MainContainer from "@/components/MainContainer/MainContainer";
+import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Search restaurant",
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Providers>
         <Header></Header>
           {children}
+        </Providers>
       </body>
     </html>
   );
