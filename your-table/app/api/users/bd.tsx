@@ -10,7 +10,7 @@ const executeQuery = async (query : any, data : any) => {
         })
         const [ result ] = await db.execute(query, data);
         await db.end();
-        console.log(result);
+        //console.log(result);
         return result;
     } catch (error : any) {
         console.log(error);
