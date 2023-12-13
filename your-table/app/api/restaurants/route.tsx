@@ -7,6 +7,6 @@ export async function GET(req: Request) {
     call getAllRestaurants()
     `, []);
     let [restData,info] = res;
-    restData = ConvertData(restData);
+    restData = await ConvertData(restData);
     return NextResponse.json(res);
 }
