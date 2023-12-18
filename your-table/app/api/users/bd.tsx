@@ -13,7 +13,7 @@ const executeQuery = async (query : any, data : any) => {
         //console.log(result);
         return result;
     } catch (error : any) {
-        console.log(error);
+        //console.log(error);
         return new Error(error);
     }
 };

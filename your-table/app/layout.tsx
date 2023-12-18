@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header/Header";
-import MainContainer from "@/components/MainContainer/MainContainer";
 import { Providers } from "@/components/Providers";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
 export const metadata: Metadata = {
   title: "Search restaurant",
@@ -19,8 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-        <Header></Header>
-          {children}
+          <AppRouterCacheProvider>
+            <Header></Header>
+            {children}
+          </AppRouterCacheProvider>
         </Providers>
       </body>
     </html>

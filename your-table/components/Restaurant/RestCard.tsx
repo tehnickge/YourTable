@@ -1,21 +1,34 @@
 import Link from "next/link";
 import RestCardInfo from "./RestCardInfo";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 
 export default function RestCard(props: any) {
-
-
   return (
-    <div className="card-restaurant ">
-      <Link href={`restaurants/${props.id}`}>
-      <label>id {props.id}</label>
-      <div className="card-restaurant__photos">
-        <image>Image</image>
-        </div>
-      <div className="card-restaurant__name">
-        <label>Name</label>
-      </div>
-      <RestCardInfo></RestCardInfo>
+    <Card sx={{ position: 3}} variant="elevation">
+      <Link href={`restaurants/${props.resData.resId}`}>
+       <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140"
+          image={props.resData?.photos[0]}
+          alt="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h4" component="div">
+          {props.resData?.nameRest}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            info...
+          </Typography>
+          <RestCardInfo resData={props.resData}></RestCardInfo>
+        </CardContent>
+      </CardActionArea>
+       
       </Link>
-    </div>
+    </Card>
   );
 }

@@ -1,8 +1,9 @@
 "use client";
-import Link from "next/link";
-import HeaderLinkContainer from "./HeaderLinkContainer";
+import HeaderLinkContainer from './HeaderLinkContainer';
+import Link from 'next/link';
 
 export default function Header() {
+ 
   const links = [
     { name: "search", href: "/" },
     { name: "home", href: "/home" },

@@ -1,10 +1,41 @@
+"use client";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { useSearchInput } from "../store/StoreSearch";
 import RestCard from "./RestCard";
 
-export default function RestContainer(props:any ) {
-  return <div className="restaurants-container">
-    {props.restData.map((data : any)  => {
-        return (<RestCard key={data} id={data}></RestCard>)
-    })}
-    
-  </div>;
+export default function RestContainer(props: any) {
+  const searchInput = useSearchInput((state: any) => state.searchInput);
+  const setSearchInput = useSearchInput((state: any) => state.setSearchInput);
+  const filterStars = useSearchInput((state: any) => state.filterStars);
+  const setFilterStars = useSearchInput((state: any) => state.setFilterStars);
+  const filterKitchens = useSearchInput((state: any) => state.filterKitchens);
+  const addFilterKitchens = useSearchInput(
+    (state: any) => state.addFilterKitchens
+  );
+  const deleteFilterKitchens = useSearchInput(
+    (state: any) => state.deleteFilterKitchens
+  );
+
+  const filterByKitchen = (item: any) => {
+    return (
+      filterKitchens.length === 0 ||
+      filterKitchens.filter((kitchen: any) =>
+        item.typeKitchen.includes(kitchen)
+      ).length !== 0
+    );
+  };
+
+  const restDataFilter = props.restData.filter(filterByKitchen);
+
+  return (
+    <Grid2 container spacing={2} sx={{ flexGrow: 1 }}>
+      {restDataFilter.map((data: any) => {
+        return (
+        <Grid2 key={data.resId} xs={12} md={4}>
+          <RestCard resData={data} />
+        </Grid2>
+        );
+      })}
+    </Grid2>
+  );
 }

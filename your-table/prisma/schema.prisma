@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:123456@localhost:5432/stoliki"
+}
+
+enum UserType {
+  USER
+  ADMIN
+  OWNER
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  password     String
+  photo        String?
+  type         UserType    @default(USER)
+  createdAt    DateTime    @default(now())
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+}
+
+model Restaurant {
+  id                 Int                  @id @default(autoincrement())
+  title              String
+  uniqueKey          String?
+  chain              RestaurantChain?     @relation(fields: [restaurantChainId], references: [id])
+  address            Address?
+  createdAt          DateTime             @default(now())
+  restaurantChainId  Int?
+  photos             String[]
+  kitchens           Kitchen[]
+  zones              Zone[]
+  administrator      User[]
+  workSchedulePerDay WorkSchedulePerDay[]
+}
+
+model WorkSchedulePerDay {
+  id           Int        @id @default(autoincrement())
+  day          Day        @relation(fields: [dayId], references: [id])
+  timeBegin    DateTime   @db.Time()
+  timeEnd      DateTime   @db.Time()
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  dayId        Int
+  restaurantId Int
+}
+
+model Day {
+  id                 Int                  @id @default(autoincrement())
+  title              String               @unique
+  WorkSchedulePerDay WorkSchedulePerDay[]
+}
+
+model Zone {
+  id           Int         @id @default(autoincrement())
+  slots        Slot[]
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+  discription  String?
+}
+
+model Slot {
+  id           Int     @id @default(autoincrement())
+  zone         Zone?   @relation(fields: [zoneId], references: [id])
+  discription  String?
+  amountPeople Int?    @default(4)
+  zoneId       Int?
+}
+
+model Kitchen {
+  id           Int         @id @default(autoincrement())
+  type         String?
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+}
+
+model Address {
+  id           Int         @id @default(autoincrement())
+  restaurantId Int         @unique
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  city         String?
+  fullAddress  String?
+  coordinate   String?
+}
+
+model RestaurantChain {
+  id          Int          @id @default(autoincrement())
+  restaurants Restaurant[]
+  title       String?
+  company     Company      @relation(fields: [companyId], references: [id])
+  companyId   Int
+}
+
+model Company {
+  id              Int               @id @default(autoincrement())
+  title           String?
+  restaurantChain RestaurantChain[]
+}

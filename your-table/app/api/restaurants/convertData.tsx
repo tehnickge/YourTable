@@ -35,6 +35,12 @@ export default async function ConvertData(res : any) {
             if(item?.typeKitchen) {
                 item.typeKitchen = item.typeKitchen.split(',');
             }
+            if(item?.photos) {
+                item.photos = item.photos.split(',');
+            }
+            if(item?.coordinate) {
+                item.coordinate = item.coordinate.replace(' ', '').split(',');
+            }
         }
     });
     return res;

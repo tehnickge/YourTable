@@ -1,7 +1,13 @@
-"use client"
-import { usePathname } from "next/navigation";
+import { CircularProgress, Container } from "@mui/material";
 
 export default function Loading() {
-    // You can add any UI inside Loading, including a Skeleton.
-    return `Loading ${usePathname()}`
-  }
+
+  return (
+    <Container sx={{ display: "flex", justifyContent: "center" }}>
+      <CircularProgress
+        color="secondary"
+        sx={{ minWidth: 200, minHeight: 200 }}
+      />
+    </Container>
+  );
+}

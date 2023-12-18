@@ -2,7 +2,6 @@ import type { AuthOptions, User } from 'next-auth'
 import GitHubProvider from "next-auth/providers/github"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from "next-auth/providers/google"
-import executeQuery from '@/app/api/users/bd'
 
 export const authOptions : AuthOptions = {
     providers: [
@@ -31,18 +30,19 @@ export const authOptions : AuthOptions = {
                 },
             },
             async authorize(credentials, req) {
-                const user : any = await fetch(`http://localhost:3000/api/users?username=${credentials?.username}&password=${credentials?.password}`);
+                const userAuthData : any = await fetch(`http://localhost:3000/api/users?username=${credentials?.username}&password=${credentials?.password}`);
+                const user = await userAuthData.json()
                 //tut budet vzaimodestvie s bd 
                 // Add logic here to look up the user from the credentials supplied
                 if (
-                  credentials?.username === user[0]?.name && 
-                  credentials?.password === user[0]?.password ) {
+                  credentials?.username === user?.name && 
+                  credentials?.password === user?.password ) {
                     // Any object returned will be saved in `user` property of the JWT
                     const resp = {
-                      id :user[0]?.id,
-                      name: user[0]?.name,
-                      password: user[0]?.password,
-                      type: user[0]?.type
+                      id :user?.id,
+                      name: user?.name,
+                      password: user?.password,
+                      type: user?.type
                     }
                     return resp;
                   } else {
@@ -67,7 +67,7 @@ export const authOptions : AuthOptions = {
             session.user.type = token.type;
           }
           return session;
-        }
+        } 
       },
       secret: process.env.NEXTAUTH_SECRET,
       jwt: {

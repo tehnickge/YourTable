@@ -1,41 +1,25 @@
 import MainContainer from "@/components/MainContainer/MainContainer";
 import RestContainer from "@/components/Restaurant/RestContainer";
 import SearchInput from "@/components/Search/SearchInput";
-import { authOptions } from "@/configs/auth"
-interface restaurant {
-  id: string;
-  name: string;
-  photos: string;
-  address: string;
-  kitchen: string;
-  stars: number;
+
+async function getData() {
+  const res = await fetch("http://localhost:3000/api/restaurants",
+    {
+      next: {
+        revalidate : 10
+      }
+    }
+  );
+  const [resData,resInfo] = await res.json();
+  return resData;
 }
 
-type restaurants = {
-  restaurants: restaurant[];
-};
-
-let rest: restaurant = {
-  id: Date.now().toString(),
-  name: "aboba",
-  photos: "/aboba.jpg",
-  address: "address",
-  kitchen: "russian",
-  stars: 0,
-};
-
-let arr = [
-  1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24,
-];
-
-export default function Home() {
+export default async function Home() {
+  const restData = await getData();
   return (
-    <div className="root">
-      <SearchInput />
         <MainContainer>
-        <RestContainer restData={arr} />
-      </MainContainer>
-    </div>
+        <SearchInput />
+          <RestContainer restData={restData} />
+        </MainContainer>
   );
 }
