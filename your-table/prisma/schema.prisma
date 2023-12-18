@@ -25,6 +25,7 @@ model User {
   createdAt    DateTime    @default(now())
   Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   restaurantId Int?
+  Rent         Rent[]
 }
 
 model Restaurant {
@@ -40,6 +41,27 @@ model Restaurant {
   zones              Zone[]
   administrator      User[]
   workSchedulePerDay WorkSchedulePerDay[]
+  Rent               Rent[]
+}
+
+model Rent {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id])
+  createdAt    DateTime   @default(now())
+  timeStart    DateTime
+  timeEnd      DateTime
+  rentStatus   RentStatus @relation(fields: [rentStatusId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  slots        Slot[]
+  userId       Int
+  rentStatusId Int
+  restaurantId Int
+}
+
+model RentStatus {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+  Rent  Rent[]
 }
 
 model WorkSchedulePerDay {
@@ -72,6 +94,8 @@ model Slot {
   discription  String?
   amountPeople Int?    @default(4)
   zoneId       Int?
+  Rent         Rent?   @relation(fields: [rentId], references: [id])
+  rentId       Int?
 }
 
 model Kitchen {
