@@ -35,6 +35,9 @@ model Restaurant {
   chain              RestaurantChain?     @relation(fields: [restaurantChainId], references: [id])
   address            Address?
   createdAt          DateTime             @default(now())
+  info               String?
+  shortInfo          String?
+  menu               Menu[]
   restaurantChainId  Int?
   photos             String[]
   kitchens           Kitchen[]
@@ -44,18 +47,33 @@ model Restaurant {
   Rent               Rent[]
 }
 
+model Menu {
+  id           Int         @id @default(autoincrement())
+  title        String?
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+}
+
 model Rent {
-  id           Int        @id @default(autoincrement())
-  user         User       @relation(fields: [userId], references: [id])
-  createdAt    DateTime   @default(now())
+  id           Int          @id @default(autoincrement())
+  user         User         @relation(fields: [userId], references: [id])
+  createdAt    DateTime     @default(now())
   timeStart    DateTime
   timeEnd      DateTime
-  rentStatus   RentStatus @relation(fields: [rentStatusId], references: [id])
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  slots        Slot[]
+  rentStatus   RentStatus   @relation(fields: [rentStatusId], references: [id])
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
   userId       Int
   rentStatusId Int
   restaurantId Int
+  slots        SlotsRents[]
+}
+
+model SlotsRents {
+  id     Int  @id @default(autoincrement())
+  slot   Slot @relation(fields: [slotId], references: [id])
+  rent   Rent @relation(fields: [rentId], references: [id])
+  slotId Int
+  rentId Int
 }
 
 model RentStatus {
@@ -89,13 +107,12 @@ model Zone {
 }
 
 model Slot {
-  id           Int     @id @default(autoincrement())
-  zone         Zone?   @relation(fields: [zoneId], references: [id])
+  id           Int          @id @default(autoincrement())
+  zone         Zone?        @relation(fields: [zoneId], references: [id])
   discription  String?
-  amountPeople Int?    @default(4)
+  amountPeople Int?         @default(4)
   zoneId       Int?
-  Rent         Rent?   @relation(fields: [rentId], references: [id])
-  rentId       Int?
+  SlotsRents   SlotsRents[]
 }
 
 model Kitchen {
