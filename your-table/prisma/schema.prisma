@@ -17,15 +17,14 @@ enum UserType {
 }
 
 model User {
-  id           Int         @id @default(autoincrement())
-  name         String      @unique
-  password     String
-  photo        String?
-  type         UserType    @default(USER)
-  createdAt    DateTime    @default(now())
-  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
-  restaurantId Int?
-  Rent         Rent[]
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  password   String
+  photo      String?
+  type       UserType     @default(USER)
+  createdAt  DateTime     @default(now())
+  Rent       Rent[]
+  Restaurant Restaurant[]
 }
 
 model Restaurant {
@@ -42,9 +41,10 @@ model Restaurant {
   photos             String[]
   kitchens           Kitchen[]
   zones              Zone[]
-  administrator      User[]
+  administrator      User?                @relation(fields: [userId], references: [id])
   workSchedulePerDay WorkSchedulePerDay[]
   Rent               Rent[]
+  userId             Int?
 }
 
 model Menu {
@@ -83,13 +83,13 @@ model RentStatus {
 }
 
 model WorkSchedulePerDay {
-  id           Int        @id @default(autoincrement())
-  day          Day        @relation(fields: [dayId], references: [id])
-  timeBegin    DateTime   @db.Time()
-  timeEnd      DateTime   @db.Time()
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  id           Int         @id @default(autoincrement())
+  day          Day         @relation(fields: [dayId], references: [id])
+  timeBegin    DateTime    @db.Time()
+  timeEnd      DateTime    @db.Time()
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   dayId        Int
-  restaurantId Int
+  restaurantId Int?
 }
 
 model Day {
@@ -128,7 +128,7 @@ model Address {
   restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
   city         String?
   fullAddress  String?
-  coordinate   String?
+  coordinate   String[]
 }
 
 model RestaurantChain {
