@@ -1,29 +1,31 @@
 import RestaurantInfo from "@/components/Restaurant/RestaurantInfo";
-import { Box, Container } from "@mui/material";
+import { Box, Button, Container, Paper } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import Image from "next/image";
+import { Slot, Zone } from "@prisma/client";
 
 async function getRestaurantInfoById(restId: any) {
-  const res = await fetch(`http://localhost:3000/api/restaurants/1`);
+  const res = await fetch(`http://localhost:3000/api/restaurants/${restId}`, {cache: "no-cache"});
   return res.json();
 }
 
 export default async function Restaurant(props: any) {
   const restData = await getRestaurantInfoById(props.params.id);
-  console.log(restData);
   return (
     <Container className="my-5 shadow-md">
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid2 container spacing={2}>
-          <RestaurantInfo></RestaurantInfo>
-          <Grid2 xs={12} md={4}>
-           
-          </Grid2>
-          <Grid2 xs={4}>xs=4</Grid2>
-          <Grid2 xs={4}>xs=4</Grid2>
-          <Grid2 xs={8}>xs=8</Grid2>
+        <Grid2 container spacing={2} rowSpacing={2} columnSpacing={2}>
+          <RestaurantInfo restData={restData} />
         </Grid2>
-      </Box>
+        <Grid2 xs={12} container columnSpacing={2} rowSpacing={1} sx={{marginTop:2}}>
+          {restData.zones.map((zone : Zone)=> {
+            return (
+            <Paper key={zone.id}>
+              {zone.discription}
+              {zone.slots.map((slot : Slot) => {return <Button key={slot.id}>{slot.discription}</Button>})}
+              </Paper>
+            )
+          })}
+          </Grid2>
+  
     </Container>
   );
 }
