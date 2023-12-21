@@ -20,9 +20,18 @@ export async function GET(req: Request, { params }: {params: { id: string }}) {
     const user = await prisma.user.findUnique({ 
       where: {
         id: Number(params.id),
+      },
+      select: {
+        id: true,
+        name: true,
+        password: true,
+        photo: true,
+        type: true,
+        createdAt: true
       }
     })
-    console.log(user);
-    if(user) { redirect(`/users/${user.id}`) }
-    redirect('/home');
+    if (!user) { return NextResponse.json(null, { status: 404 });} else {
+      return NextResponse.json({user})
+    }
+
 }

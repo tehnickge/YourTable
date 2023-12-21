@@ -10,7 +10,7 @@ async function getData() {
       }
     }
   );
-  const [resData,resInfo] = await res.json();
+  const resData = await res.json();
   return resData;
 }
 

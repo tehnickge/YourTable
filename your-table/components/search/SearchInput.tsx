@@ -14,6 +14,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import { Kitchen } from "@prisma/client";
 
 export default function SearchInput(props: any) {
   const searchInput = useSearchInput((state: any) => state.searchInput);
@@ -32,6 +33,7 @@ export default function SearchInput(props: any) {
   );
   const restaurants = useSearchInput((state: any) => state.restaurants);
   const filteredRest = useSearchInput((state: any) => state.filteredRestautants);
+  const [allKitchen, setAllKitchen] = useState([]);
 
   const SearchChangeHandler = (event: any) => {
     setSearchInput(event.target.value);
@@ -58,11 +60,14 @@ export default function SearchInput(props: any) {
     filteredRest;
   }, [filterKitchens, searchInput]);
 
-  console.log(filterKitchens);
-  console.log(searchInput);
-  console.log(filterStars);
+  // console.log(filterKitchens);
+  // console.log(searchInput);
+  // console.log(filterStars);
+  // console.log(restaurants);
 
-  console.log(restaurants);
+  useEffect(() => {
+    fetch("http://localhost:3000/api/restaurants/kitchens").then((res)=> res.json()).then((it) => setAllKitchen(it));
+  }, []);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -113,36 +118,21 @@ export default function SearchInput(props: any) {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem>
-            <label htmlFor="filter1">
-              <Checkbox
-                id="filter1"
-                onChange={CheckBoxChangeHandler}
-                value={"Русская"}
-              ></Checkbox>
-              Русская
-            </label>
-          </MenuItem>
-          <MenuItem>
-            <label htmlFor="filter2">
-              <Checkbox
-                id="filter2"
-                onChange={CheckBoxChangeHandler}
-                value={"Фрацузкая"}
-              />
-              Фрацузкая
-            </label>
-          </MenuItem>
-          <MenuItem>
-            <label htmlFor="filter3">
-              <Checkbox
-                id="filter3"
-                onChange={CheckBoxChangeHandler}
-                value={"Итальянская"}
-              />
-              Итальянская
-            </label>
-          </MenuItem>
+          {allKitchen.map((kitchen : Kitchen) => {
+            return ( 
+              <MenuItem key={kitchen.id}>
+              <label htmlFor="filter1">
+                <Checkbox
+                  id={`${kitchen.id}`}
+                  onChange={CheckBoxChangeHandler}
+                  value={kitchen.type}
+                ></Checkbox>
+                {kitchen.type}
+              </label>
+            </MenuItem>
+            )
+          })}
+          
         </Menu>
       </Grid2>
     </Grid2>

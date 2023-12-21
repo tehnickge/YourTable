@@ -1,15 +1,16 @@
+import { Button, ButtonGroup, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function HeaderLinkContainer(props: any) {
   return (
-    <div className="">
+    <ButtonGroup variant="text" aria-label="text button group">
       {props.Links.map((link: any) => {
         return (
-          <Link href={link.href} key={link} className="mx-5 text-black hover:text-lime-600">
-            {link.name}
+          <Link href={link.href} key={link} className="">
+            <Button><Typography color={"#D3D3D3"} variant="h5" className="hover:text-zinc-50">{link.name}</Typography></Button>
           </Link>
         );
       })}
-    </div>
+    </ButtonGroup>
   );
-}
+} 

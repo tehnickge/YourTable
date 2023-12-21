@@ -42,7 +42,8 @@ export const authOptions : AuthOptions = {
                       id :user?.id,
                       name: user?.name,
                       password: user?.password,
-                      type: user?.type
+                      type: user?.type,
+                      photo: user?.photo
                     }
                     return resp;
                   } else {
@@ -58,6 +59,7 @@ export const authOptions : AuthOptions = {
           if(user) {
             token.id = user.id;
             token.type = user.type;
+            token.photo = user.photo;
           }
           return token;
         },
@@ -65,6 +67,7 @@ export const authOptions : AuthOptions = {
           if(token) {
             session.user.id = token.id;
             session.user.type = token.type;
+            session.user.photo = token.photo;
           }
           return session;
         } 

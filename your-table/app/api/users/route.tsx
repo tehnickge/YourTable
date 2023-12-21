@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     },
   });
 
-  if (!user) NextResponse.json(null, { status: 404 });
+  if (!user) return NextResponse.json(null, { status: 404 });
 
   return NextResponse.json(user);
 }
