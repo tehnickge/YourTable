@@ -41,11 +41,9 @@ export default function SearchInput(props: any) {
 
   const ButtonChangeHandler = () => {
     setFilterStars(filterStars + 1);
-    console.log(filterStars);
   };
 
   const CheckBoxChangeHandler = (event: any) => {
-    console.log(event.target.checked);
     if (event.target.checked) {
       addFilterKitchens(event.target.value);
     } else {

@@ -1,13 +1,35 @@
 import { NextResponse } from "next/server";
-import executeQuery from "../../users/bd";
-import ConvertData from "../convertData";
+import prisma from "@/lib/prisma";
 
 
 export async function GET(req: Request, { params }: {params: { id: string }}) {
-    const res : any = await executeQuery(`
-    call getRestaurantById('${params.id}')
-    `, [])
-    let [restData,info] = await res;
-    restData = await ConvertData(restData);
-    return NextResponse.json(restData)
+    const user = await prisma.restaurant.findUnique({
+        select:{
+          id: true,
+          title: true,
+          address: true,
+          info: true,
+          photos: true,
+          kitchens: true,
+          zones: {
+            select: {
+              id: true,
+              restaurantId: true,
+              discription: true,
+              slots: true,
+            }
+          },
+          chain: {
+            select: {
+              id: true,
+              title: true,
+              company: true
+            }
+          }
+        },
+        where: {
+            id: Number(params.id)
+        }
+      });
+    return NextResponse.json(user)
 }
