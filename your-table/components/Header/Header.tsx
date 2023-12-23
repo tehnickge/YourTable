@@ -19,7 +19,7 @@ export default function Header() {
     <Grid2
       container
       xs={12}
-      className=""
+      className=" shadow-lg"
       sx={{ backgroundColor: ['#0000CD'], minHeight: 50}}
     >
       <Grid2 xs={11} sx={{ display: "flex",

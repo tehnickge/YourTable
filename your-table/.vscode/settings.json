@@ -18,5 +18,8 @@
             "password": "123456",
             "connectionTimeout": 50
         }
+    ],
+    "cSpell.words": [
+        "Datepicker"
     ]
 }

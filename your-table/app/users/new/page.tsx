@@ -40,8 +40,6 @@ export default function NewUser() {
           console.log(data);
           setCreateInfo(`Пользователь успешно создан ${data.user.name}`)
           setIsLoading(false);
-         ;
-          
       }
       setIsLoading(false);
       });

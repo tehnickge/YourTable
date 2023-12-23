@@ -14,6 +14,7 @@ import { Rent } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +61,9 @@ export default function Home() {
           sx={{ display: "flex", justifyItems: "center", alignItems: "center" }}
         >
           <Typography variant="h3">Имя: {userData?.user?.name}</Typography>
-          <Link href={`http://localhost:3000/api/auth/signout`} className=" text-red-700 hover:text-lg hover:text-orange-200">выйти</Link>
+          <Link href={`http://localhost:3000/api/auth/signout`} className=" text-red-700 hover:text-lg hover:text-orange-200">
+            <ExitToAppIcon />
+          </Link>
         </Grid2>
         <Grid2 xs={12} sx={{ marginTop: 2 }}>
           <hr></hr>
