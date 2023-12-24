@@ -7,8 +7,8 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TableBarIcon from "@mui/icons-material/TableBar";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import moment from "moment";
-import zIndex from "@mui/material/styles/zIndex";
 
 export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
   const [startDate, setStartDate] = useState(new Date());
@@ -21,39 +21,53 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
   const [arrayTimeEnd, setArrayTimeEnd] = useState([]);
 
   const getFreeTimePerDate = () => {
-    
     const dataToFetch = {
-      "startDate" : moment(startDate).format("YYYY-MM-DD"), 
-      "selectedSlot" : selectedSlot,
-      "restaurantId": props.zonesAndSlots.id
-    }
+      startDate: moment(startDate).format("YYYY-MM-DD"),
+      selectedSlot: selectedSlot,
+      restaurantId: props.zonesAndSlots.id,
+    };
 
-    if(dataToFetch.restaurantId === null
-      || dataToFetch.selectedSlot === null
-      || dataToFetch.startDate === null
-      ) { return console.log("ERROR DATA YEMPTY")}
+    if (
+      dataToFetch.restaurantId === null ||
+      dataToFetch.selectedSlot === null ||
+      dataToFetch.startDate === null
+    ) {
+      return console.log("ERROR DATA YEMPTY");
+    }
 
     fetch("http://localhost:3000/api/rents/getarraytimesperdate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataToFetch),
-    }).then((res: any) => res.json()).then((data: any) => setArrayTimeBegin([...data]))
+    })
+      .then((res: any) => res.json())
+      .then((data: any) => setArrayTimeBegin([...data]));
+  };
 
-  }
+  const makeRent = () => {
+    const dataToFetch = {
+      selectedSlot: selectedSlot,
+      timeBegin: selectedTimeBegin,
+      timeEnd: selectedTimeEnd,
+      restaurantId: props.zonesAndSlots.id,
+      startDate: moment(startDate).format("YYYY-MM-DD"),
+    };
+    console.log("dataToFetch", dataToFetch);
+  };
 
   const selectTimeBeginHandler = (e: any) => {
     // @ts-ignore
     setSelectedTimeBegin((prev: any) => {
-      return moment(e.target.id,"HHmm").format("HH:mm:ss")
-    })
-  }
-  
+      return moment(e.target.id, "HHmm").format("HH:mm:ss");
+    });
+  };
+
   const selectTimeEndHandler = (e: any) => {
     // @ts-ignore
     setSelectedTimeEnd((prev: any) => {
-      return moment(e.target.id,"HHmm").format("HH:mm:ss")
-    })
-  }
+      return moment(e.target.id, "HHmm").format("HH:mm:ss");
+    });
+  };
 
   const selectSlotHandler = (e: any) => {
     // @ts-ignore
@@ -68,32 +82,59 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
     });
   };
 
-  const datePickerChangeHandler = (data : any) => {
+  const datePickerChangeHandler = (data: any) => {
     setStartDate(data);
-  }
+  };
 
   useEffect(() => {
-    const filtered = arrayTimeBegin.filter((time) => { return moment(time,"HHmm").isAfter(moment(selectedTimeBegin,"HHmm")) });
-    console.log("filtered",filtered);
+    const filtered = arrayTimeBegin.filter((time) => {
+      return moment(time, "HHmm").isAfter(moment(selectedTimeBegin, "HHmm"));
+    });
     setArrayTimeEnd([...filtered]);
-  },[selectedTimeBegin]);
+  }, [selectedTimeBegin]);
 
-  useEffect(()=> {
+  useEffect(() => {
     getFreeTimePerDate();
-  },[selectedSlot, startDate])
+    // if change slot or date time = null
+    setSelectedTimeBegin(null);
+    setSelectedTimeEnd(null);
+  }, [selectedSlot, startDate]);
 
+  useEffect(() => {
+    setSelectedTimeEnd(null);
+  }, [selectedTimeBegin]);
 
   console.log(selectedSlot);
   console.log(selectedTimeBegin);
   console.log(selectedTimeEnd);
   console.log(startDate);
   return (
-    <Grid2>
-      <button onClick={getFreeTimePerDate}>KEK</button>
-      <Fab variant="extended" color="inherit" onClick={(e) => menuStateHandler(e)}>
-        <TableBarIcon />
-        столики
-      </Fab>
+    <Grid2
+      sx={{
+        display: "flex",
+        justifyItems: "center",
+        alignItems: "stretch",
+        justifyContent: "space-around",
+        flexDirection: "column",
+      }}
+    >
+      <Grid2
+        sx={{
+          display: "flex",
+          justifyItems: "center",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <Fab
+          variant="extended"
+          color="inherit"
+          onClick={(e) => menuStateHandler(e)}
+        >
+          <TableBarIcon />
+          столики
+        </Fab>
+      </Grid2>
       {isMenuSlotsOpen && (
         <Paper>
           <Grid2>
@@ -101,9 +142,10 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
             <DatePicker
               selected={startDate}
               onChange={datePickerChangeHandler}
-              sx={{zIndex: 50}}
+              sx={{ zIndex: 50 }}
             />
           </Grid2>
+
           {props.zonesAndSlots.zones.map((zone: Zone) => {
             return (
               <Grid2 key={zone.id} sx={{ marginLeft: 1, marginRight: 1 }}>
@@ -114,6 +156,7 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
                       key={slot.id}
                       id={`${slot.id}`}
                       onClick={selectSlotHandler}
+                      color={`${selectedSlot == slot.id ? "error" : "info"}`}
                     >
                       {slot.discription}
                     </Button>
@@ -124,23 +167,72 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
           })}
         </Paper>
       )}
-      { isMenuSlotsOpen && ((selectedSlot === null) ? 
-      null
-       : 
-       <Paper>
-        <Grid2>
-        <Typography>Время начала:</Typography>
-          {arrayTimeBegin.map((time) => {
-            return (<Button key={time} id={`${time}`} onClick={selectTimeBeginHandler} >{time}</Button>)
-          })}
-        </Grid2>
-        <Grid2>
-        <Typography>Время конца:</Typography>
-        {arrayTimeEnd.map((time) => {
-            return (<Button key={time} id={`${time}`} onClick={selectTimeEndHandler} >{time}</Button>)
-          })}
-        </Grid2>
-       </Paper>)}
+      {isMenuSlotsOpen &&
+        (selectedSlot === null ? null : (
+          <Paper>
+            <Grid2>
+              <Typography>Время начала:</Typography>
+              {arrayTimeBegin.map((time) => {
+                return (
+                  <Button
+                    key={time}
+                    id={`${time}`}
+                    onClick={selectTimeBeginHandler}
+                    color={`${
+                      time == moment(selectedTimeBegin, "HH:mm").format("HH:mm")
+                        ? "error"
+                        : "info"
+                    }`}
+                  >
+                    {time}
+                  </Button>
+                );
+              })}
+            </Grid2>
+            <Grid2>
+              <Typography>Время конца:</Typography>
+              {arrayTimeEnd.map((time) => {
+                return (
+                  <Button
+                    key={time}
+                    id={`${time}`}
+                    onClick={selectTimeEndHandler}
+                    color={`${
+                      time == moment(selectedTimeEnd, "HH:mm").format("HH:mm")
+                        ? "error"
+                        : "info"
+                    }`}
+                  >
+                    {time}
+                  </Button>
+                );
+              })}
+            </Grid2>
+            <Grid2
+              sx={{
+                display: "flex",
+                justifyItems: "center",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <Fab
+                variant="extended"
+                color="info"
+                disabled={
+                  selectedSlot === "" ||
+                  selectedSlot === null ||
+                  selectedTimeBegin === null ||
+                  selectedTimeEnd === null
+                }
+                onClick={makeRent}
+              >
+                <AddCircleOutlineIcon />
+                Забронировать
+              </Fab>
+            </Grid2>
+          </Paper>
+        ))}
       {props.children}
     </Grid2>
   );

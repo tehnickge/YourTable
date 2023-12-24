@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 const generateTimeArray = async(timeStart : any, timeEnd : any, date: any, restId : any, slotId : any) => {
     if(moment.utc(timeStart, "HHmm").isAfter(moment.utc(timeEnd,"HHmm"))) { return NextResponse.json({"error" : "bad schedule"})}
 
+    //all rents 
     const RentPerDay = await prisma.rent.findMany({
        where: {
         restaurantId: restId,
@@ -18,6 +19,8 @@ const generateTimeArray = async(timeStart : any, timeEnd : any, date: any, restI
         slots: true
        }
     });
+
+    // check in to day
     const checkToDay = await RentPerDay.filter((rent)=> {
         return(moment.utc(rent.timeStart,"YYYY-MM-DD").format("YYYY-MM-DD") === moment(date,"YYYY-MM-DD").format("YYYY-MM-DD"))
     })
@@ -29,14 +32,15 @@ const generateTimeArray = async(timeStart : any, timeEnd : any, date: any, restI
     // if this date = rent day
     if(moment(date, "YYYY-MM-DD").isSame(moment.utc().format("YYYY-MM-DD"))) {
         //@ts-ignore
-        tmpTime = await moment.utc().format("HH");
+        tmpTime = await moment.utc(moment.utc(timeStart,"HHmm").hours(moment().format("HH")),"HHmm").add(1,"hour");
     } else {
         tmpTime = await moment.utc(timeStart,"HHmm");
+
     }
 
     const arrTimes = [];
 
-    while(moment.utc(timeEnd,"HHmm").isSameOrAfter(moment.utc(tmpTime,"HHmm"))) {
+    while(moment.utc(timeEnd).isSameOrAfter(moment.utc(tmpTime,"HH:mm"),"hour")) {
         arrTimes.push(moment(tmpTime, "HHmm").format("HH:mm"));
         tmpTime = await moment(tmpTime, "HHmm").add(1,"h")
     } 
@@ -67,9 +71,7 @@ export async function POST(req: Request) {
     const thisDayOfWeek = await restaurant.workSchedulePerDay.filter((shedule : any) => {
         return shedule.day.title === moment.utc(body.startDate,"YYYY-MM-DD").format("dddd")
     })
-    console.log(thisDayOfWeek);
-    const arrWithTime = await generateTimeArray(thisDayOfWeek[0].timeBegin,thisDayOfWeek[0].timeEnd, body.startDate, body.restaurantId, body.selectedSlot)
-    console.log(await arrWithTime)
+    const arrWithTime = await generateTimeArray(thisDayOfWeek[0].timeBegin,thisDayOfWeek[0].timeEnd, body.startDate, body.restaurantId, body.selectedSlot);
 
     return NextResponse.json(arrWithTime);
 }
