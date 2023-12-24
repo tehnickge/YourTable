@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import TableBarIcon from "@mui/icons-material/TableBar";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import moment from "moment";
+import { useSession } from "next-auth/react";
 
 export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
   const [startDate, setStartDate] = useState(new Date());
@@ -19,6 +20,9 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
 
   const [arrayTimeBegin, setArrayTimeBegin] = useState([]);
   const [arrayTimeEnd, setArrayTimeEnd] = useState([]);
+
+  const user = useSession();
+  console.log("User", user);
 
   const getFreeTimePerDate = () => {
     const dataToFetch = {
@@ -32,7 +36,7 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
       dataToFetch.selectedSlot === null ||
       dataToFetch.startDate === null
     ) {
-      return console.log("ERROR DATA YEMPTY");
+      return console.log("ERROR DATA is Empty");
     }
 
     fetch("http://localhost:3000/api/rents/getarraytimesperdate", {
@@ -46,13 +50,38 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
 
   const makeRent = () => {
     const dataToFetch = {
-      selectedSlot: selectedSlot,
+      slotId: selectedSlot,
       timeBegin: selectedTimeBegin,
       timeEnd: selectedTimeEnd,
       restaurantId: props.zonesAndSlots.id,
       startDate: moment(startDate).format("YYYY-MM-DD"),
+      userId: user?.data?.user?.id,
     };
-    console.log("dataToFetch", dataToFetch);
+
+    if (
+      dataToFetch.slotId === null ||
+      dataToFetch.timeBegin === null ||
+      dataToFetch.timeEnd === null ||
+      dataToFetch.restaurantId === null ||
+      dataToFetch.startDate === null ||
+      dataToFetch.userId === null
+    )
+      return alert("Ошибка");
+
+    fetch("http://localhost:3000/api/rents/new", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataToFetch),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data === null) {
+          alert("Ошибка это время уже занято");
+        } else {
+          alert(`Заказ под номером ${data.rentId} создан !`);
+        }
+        console.log(data);
+      });
   };
 
   const selectTimeBeginHandler = (e: any) => {
@@ -223,13 +252,15 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
                   selectedSlot === "" ||
                   selectedSlot === null ||
                   selectedTimeBegin === null ||
-                  selectedTimeEnd === null
+                  selectedTimeEnd === null ||
+                  user.status === "unauthenticated"
                 }
                 onClick={makeRent}
               >
                 <AddCircleOutlineIcon />
                 Забронировать
               </Fab>
+              {user.status === "unauthenticated" && <Typography>Зарегистрируйтесь или войдите в аккаунт</Typography>}
             </Grid2>
           </Paper>
         ))}
