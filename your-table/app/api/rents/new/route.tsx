@@ -7,9 +7,6 @@ export async function POST(req: Request) {
     const dateNow = moment().format("YYYY-MM-DD HH:mm:ss");
     const dateStart = moment([body.startDate, body.timeBegin], "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss.SSS")
     const dateEnd = moment([body.startDate, body.timeEnd], "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss.SSS")
-    console.log(body)
-    console.log(dateStart)
-    console.log(dateEnd)
 
     const checkRent = await prisma.rent.findMany({
         include: {
@@ -25,7 +22,6 @@ export async function POST(req: Request) {
             timeStart: moment(dateStart).toISOString(),
         }
     });
-    console.log(checkRent)
     if(checkRent.length !== 0) {
         return NextResponse.json(null, { status: 404 })
     }
@@ -46,8 +42,6 @@ export async function POST(req: Request) {
             
         },
     });
-
-    console.log(rent);
 
     return NextResponse.json({rentId: rent.id}, { status: 200 })
 }

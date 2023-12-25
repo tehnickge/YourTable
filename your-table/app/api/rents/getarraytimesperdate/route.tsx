@@ -66,7 +66,6 @@ export async function POST(req: Request) {
     })
 
     if(!restaurant) { return NextResponse.json({"error": "restaurant not founded"})};
-
     
     const thisDayOfWeek = await restaurant.workSchedulePerDay.filter((shedule : any) => {
         return shedule.day.title === moment.utc(body.startDate,"YYYY-MM-DD").format("dddd")

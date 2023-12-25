@@ -45,7 +45,7 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
       body: JSON.stringify(dataToFetch),
     })
       .then((res: any) => res.json())
-      .then((data: any) => setArrayTimeBegin([...data]));
+      .then((data: any) => {if(data !== null) setArrayTimeBegin([...data])});
   };
 
   const makeRent = () => {
