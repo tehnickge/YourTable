@@ -66,7 +66,6 @@ export default function Home() {
           </Link>
         </Grid2>
         <Grid2 xs={12} sx={{ marginTop: 2 }}>
-          <hr></hr>
         </Grid2>
         <Grid2
           xs={12}

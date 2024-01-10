@@ -1,10 +1,9 @@
 "use client";
-import MainContainer from "@/components/MainContainer/MainContainer";
 import {
-  Box,
   Button,
   CircularProgress,
   Container,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -17,6 +16,7 @@ export default function NewUser() {
   const { register, handleSubmit } = useForm();
   const [response, setRespones] = useState();
   const [createInfo, setCreateInfo] = useState("Создание пользователя");
+
 
   const handleFormSubmit = (formData: any) => {
     setIsLoading(true);
@@ -35,19 +35,35 @@ export default function NewUser() {
         }
       })
       .then((data) => {
-        if(data !== null) {
+        if (data !== null) {
           setRespones(data);
           console.log(data);
-          setCreateInfo(`Пользователь успешно создан ${data.user.name}`)
+          setCreateInfo(`Пользователь успешно создан ${data.user.name}`);
           setIsLoading(false);
-      }
-      setIsLoading(false);
+        }
+        setIsLoading(false);
       });
   };
 
   return (
-    <MainContainer>
-      <Container className=" display: flex" maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      sx={{
+        display: "flex",
+        justifyItems: "center",
+        justifyContent: "center",
+        padding: "16px",
+      }}
+    >
+      <Paper
+        square={false}
+        elevation={1}
+        variant="elevation"
+        sx={{
+          padding: "8px",
+          paddingBottom: "16px"
+        }}
+      >
         {!isLoading && (
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             <Stack
@@ -56,7 +72,9 @@ export default function NewUser() {
               alignItems="center"
               spacing={3}
             >
-              <Typography variant="h5">{createInfo}</Typography>
+              <Typography variant="h5" className=" px-2 py-2">
+                {createInfo}
+              </Typography>
               <TextField
                 id="name"
                 label="name"
@@ -88,7 +106,9 @@ export default function NewUser() {
                   required: false,
                 })}
               />
-              <Button type="submit">create new user</Button>
+              <Button variant="contained" color="success" type="submit">
+                create new user
+              </Button>
             </Stack>
           </form>
         )}
@@ -100,7 +120,7 @@ export default function NewUser() {
             />
           </Container>
         )}
-      </Container>
-    </MainContainer>
+      </Paper>
+    </Container>
   );
 }
