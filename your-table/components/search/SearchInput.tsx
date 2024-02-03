@@ -7,6 +7,7 @@ import {
   Button,
   Checkbox,
   FormControl,
+  IconButton,
   Input,
   InputAdornment,
   InputLabel,
@@ -32,15 +33,13 @@ export default function SearchInput(props: any) {
     (state: any) => state.fetchRestaurants
   );
   const restaurants = useSearchInput((state: any) => state.restaurants);
-  const filteredRest = useSearchInput((state: any) => state.filteredRestautants);
+  const filteredRest = useSearchInput(
+    (state: any) => state.filteredRestautants
+  );
   const [allKitchen, setAllKitchen] = useState([]);
 
   const SearchChangeHandler = (event: any) => {
     setSearchInput(event.target.value);
-  };
-
-  const ButtonChangeHandler = () => {
-    setFilterStars(filterStars + 1);
   };
 
   const CheckBoxChangeHandler = (event: any) => {
@@ -64,7 +63,9 @@ export default function SearchInput(props: any) {
   // console.log(restaurants);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/restaurants/kitchens").then((res)=> res.json()).then((it) => setAllKitchen(it));
+    fetch("http://localhost:3000/api/restaurants/kitchens")
+      .then((res) => res.json())
+      .then((it) => setAllKitchen(it));
   }, []);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -78,15 +79,37 @@ export default function SearchInput(props: any) {
 
   return (
     <Grid2 container>
-      <Grid2 sm={12} sx={{backgroundColor: "#00000039", borderRadius: 30}}>
+      <Grid2
+        sm={12}
+        sx={{
+          backgroundColor: "#d6daff",
+          backgroundImage: "linear-gradient(135deg, #d6daff 0%, #ffebe4 100%)",
+          borderRadius: "80px",
+          height: "70px",
+        }}
+      >
         <FormControl
           fullWidth
-          sx={{ px: 10, py: 1, paddingBottom: 4, borderRadius: 40}}
+          sx={{ px: 10, py: 0, paddingBottom: 4, borderRadius: 40 }}
           variant="standard"
         >
           <InputLabel
             htmlFor="standard-adornment-search"
-            sx={{ my: 5, mx: 4, color: ["black"] }}
+            sx={{
+              my: 3,
+              mx: 1,
+              color: ["black"],
+              fontSize: "24px",
+              backgroundColor: "transperent",
+              padding: "4px",
+              paddingX: "8px",
+              borderRadius: "24px",
+              ":hover": {
+                border: "1px solid gray",
+                borderColor: "#9a8decff",
+                color: "#9a8decff",
+              },
+            }}
           >
             Поиск
           </InputLabel>
@@ -97,13 +120,29 @@ export default function SearchInput(props: any) {
           />
         </FormControl>
       </Grid2>
-      <Grid2 sm={12} sx={{px: 20}}>
+      <Grid2
+        sm={12}
+        sx={{
+          marginTop: "16px",
+          marginBottom: "16px"
+        }}
+      >
         <Button
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
+          variant="outlined"
+          sx={{
+            borderRadius: "24px",
+            borderColor: "#9a8decff",
+            color: "#9a8decff",
+            ":hover": {
+              borderColor: "purple",
+              color: "purple",
+            },
+          }}
         >
           Кухни
         </Button>
@@ -116,21 +155,20 @@ export default function SearchInput(props: any) {
             "aria-labelledby": "basic-button",
           }}
         >
-          {allKitchen.map((kitchen : Kitchen) => {
-            return ( 
+          {allKitchen.map((kitchen: Kitchen) => {
+            return (
               <MenuItem key={kitchen.id}>
-              <label htmlFor="filter1">
-                <Checkbox
-                  id={`${kitchen.id}`}
-                  onChange={CheckBoxChangeHandler}
-                  value={kitchen.type}
-                ></Checkbox>
-                {kitchen.type}
-              </label>
-            </MenuItem>
-            )
+                <label htmlFor="filter1">
+                  <Checkbox
+                    id={`${kitchen.id}`}
+                    onChange={CheckBoxChangeHandler}
+                    value={kitchen.type}
+                  ></Checkbox>
+                  {kitchen.type}
+                </label>
+              </MenuItem>
+            );
           })}
-          
         </Menu>
       </Grid2>
     </Grid2>

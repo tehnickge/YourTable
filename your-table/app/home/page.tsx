@@ -8,13 +8,34 @@ import {
   Paper,
   Stack,
   Typography,
+  createTheme,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Rent } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import moment from "moment";
+import { Nabla, Raleway } from "next/font/google";
+
+export const nabla = Nabla({
+  weight: "variable",
+  preload: true,
+  subsets: ["latin"],
+  axes: ["EDPT", "EHLT"],
+});
+
+export const raleway = Raleway({
+  weight: "300",
+  subsets: [],
+});
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [nabla.style.fontFamily, raleway.style.fontFamily].join(","),
+  },
+});
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,25 +69,53 @@ export default function Home() {
     );
   }
   return (
-    <MainContainer>
-      <Grid2 container columnSpacing={1}>
-        <Grid2 xs={4}>
-          <Avatar
-            src={userData?.user?.photo}
-            sx={{ minWidth: 250, minHeight: 250 }}
-          ></Avatar>
-        </Grid2>
-        <Grid2
-          xs={8}
-          sx={{ display: "flex", justifyItems: "center", alignItems: "center" }}
-        >
-          <Typography variant="h3">Имя: {userData?.user?.name}</Typography>
-          <Link href={`http://localhost:3000/api/auth/signout`} className=" text-red-700 hover:text-lg hover:text-orange-200">
-            <ExitToAppIcon />
-          </Link>
-        </Grid2>
-        <Grid2 xs={12} sx={{ marginTop: 2 }}>
-        </Grid2>
+    <Container
+      sx={{
+        margin: "auto",
+        paddingTop: "24px",
+      }}
+    >
+      <Grid2
+        container
+        columnSpacing={1}
+        sx={{
+          boxShadow: "0px 0px 5rem gray",
+          padding: "12px",
+          borderRadius: "16px",
+        }}
+      >
+        <Stack direction="row">
+          <Grid2 xs={8}>
+            <Avatar
+              src={userData?.user?.photo}
+              sx={{
+                minWidth: 250,
+                minHeight: 250,
+                border: "8px solid",
+                borderColor: "#FFAF9F",
+              }}
+            ></Avatar>
+          </Grid2>
+          <Grid2
+            xs={4}
+            sx={{
+              display: "flex",
+              justifyItems: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h3" fontFamily={raleway}>
+              {userData?.user?.name}
+            </Typography>
+            <Link
+              href={`http://localhost:3000/api/auth/signout`}
+              className=" text-red-700 hover:text-lg hover:text-orange-200"
+            >
+              <ExitToAppIcon />
+            </Link>
+          </Grid2>
+        </Stack>
+        <Grid2 xs={12} sx={{ marginTop: 2 }}></Grid2>
         <Grid2
           xs={12}
           sx={{
@@ -78,11 +127,29 @@ export default function Home() {
           <Typography variant="h3">История</Typography>
         </Grid2>
         <Grid2 xs={12}>
-          <Stack spacing={2}>
+          <Stack spacing={2} justifyContent="center" alignItems="center">
             {userData?.user?.Rent.map((rent: Rent) => {
               return (
-                <Paper key={rent.id} sx={{ padding: 1 }}>
-                  <Grid2 container columnSpacing={1} rowSpacing={1}>
+                <Paper
+                  variant="outlined"
+                  key={rent.id}
+                  className="w-5/6 md:w-3/4"
+                  sx={{
+                    padding: 1,
+                    borderRadius: "24px",
+                    backgroundColor: "#FFFFFC",
+                  }}
+                >
+                  <Grid2
+                    container
+                    columnSpacing={1}
+                    rowSpacing={2}
+                    sx={{
+                      display: "flex",
+                      justifyItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Grid2
                       xs={12}
                       sx={{
@@ -91,7 +158,20 @@ export default function Home() {
                         justifyContent: "center",
                       }}
                     >
-                      <Typography>Номер заказа: {rent.id}</Typography>
+                      <Typography
+                        fontSize={24}
+                        fontFamily={raleway}
+                      >{`номер заказа: ${rent.id}`}</Typography>
+                    </Grid2>
+                    <Grid2
+                      xs={12}
+                      sx={{
+                        display: "flex",
+                        justifyItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <hr className=" border-1 w-2/4 border-r-gray-500"></hr>
                     </Grid2>
                     <Grid2 xs={12}>
                       <Link href={`/restaurants/${rent.restaurant.id}`}>
@@ -101,25 +181,52 @@ export default function Home() {
                             justifyItems: "center",
                             justifyContent: "center",
                           }}
-                          variant="h5"
+                          variant="h3"
+                          className="hover:font-bold"
                         >
                           {rent.restaurant.title}
                         </Typography>
                       </Link>
                     </Grid2>
-                    <Stack
-                      direction="row"
-                      divider={<Divider orientation="vertical" flexItem />}
-                      spacing={2}
-                    >
-                      <Typography>время начала: {rent.timeStart}</Typography>
-                      <Typography>время конца: {rent.timeEnd}</Typography>
-                      <Typography>время создания: {rent.createdAt}</Typography>
-                    </Stack>
-                    <Grid2 xs={12}>
-                      <Typography>статус: {rent.rentStatus.title}</Typography>
-                    </Grid2>
                     <Stack>
+                    <Stack 
+                      direction="row"
+                      divider={<Divider orientation="vertical" />}
+                      spacing={2}
+                      sx={{
+                        padding: "14px",
+                        borderRadius: "24px",
+                        backgroundColor: "#FFAF9F",
+                      }}
+                    >
+                      <Typography variant="h3" fontSize={18}>
+                        Дата:{" "}
+                        {moment(rent.timeStart, "YYYY-MM-DD HH:mm").format(
+                          "YYYY/MM/DD"
+                        )}
+                      </Typography>
+                      <Typography variant="h3" fontSize={18}>
+                        Время начала:{" "}
+                        {moment
+                          .utc(rent.timeStart, "YYYY-MM-DD HH:mm")
+                          .format("HH:mm")}
+                      </Typography>
+                      <Typography variant="h3" fontSize={18}>
+                        Время конца:{" "}
+                        {moment
+                          .utc(rent.timeEnd, "YYYY-MM-DD HH:mm")
+                          .format("HH:mm")}
+                      </Typography>
+                    </Stack>
+                    <Stack alignContent="center" textAlign="center"
+                      sx={{
+                        display: "flex",
+                        padding: "16px",
+                        borderRadius: "24px",
+                        backgroundColor: "#fcff60",
+                        marginY: "10px",
+                      }}
+                    >
                       {rent?.slots.map((slot: slot) => {
                         return (
                           <Typography key={slot.id}>
@@ -129,6 +236,22 @@ export default function Home() {
                         );
                       })}
                     </Stack>
+                    <Stack textAlign="center" sx={{
+                        display: "flex",
+                        justifyItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "18px",
+                        backgroundColor: "#DBDBDD"
+                      }}>
+                        <Typography>Статус: {rent.rentStatus.title}</Typography>
+                        <Typography>
+                          Время создания:{" "}
+                          {moment(rent.createdAt, "YYYY-MM-DD HH:mm").format(
+                            "YYYY/MM/DD HH:mm"
+                          )}
+                        </Typography>
+                      </Stack>
+                    </Stack>
                   </Grid2>
                 </Paper>
               );
@@ -136,6 +259,6 @@ export default function Home() {
           </Stack>
         </Grid2>
       </Grid2>
-    </MainContainer>
+    </Container>
   );
 }

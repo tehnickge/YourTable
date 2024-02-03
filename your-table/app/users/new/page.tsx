@@ -10,12 +10,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from 'next/navigation';
 
 export default function NewUser() {
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit } = useForm();
   const [response, setRespones] = useState();
   const [createInfo, setCreateInfo] = useState("Создание пользователя");
+  const router = useRouter();
 
 
   const handleFormSubmit = (formData: any) => {
@@ -28,7 +30,7 @@ export default function NewUser() {
       .then((res) => {
         console.log(res);
         if (res.status === 404) {
-          setCreateInfo("этот name уже занят");
+          setCreateInfo("этот имя уже занято");
           return null;
         } else {
           return res.json();
@@ -40,6 +42,7 @@ export default function NewUser() {
           console.log(data);
           setCreateInfo(`Пользователь успешно создан ${data.user.name}`);
           setIsLoading(false);
+          router.push("/api/auth/signin");
         }
         setIsLoading(false);
       });

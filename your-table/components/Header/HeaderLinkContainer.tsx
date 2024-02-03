@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function HeaderLinkContainer(props: any) {
   return (
-    <ButtonGroup variant="text" aria-label="text button group">
+    <ButtonGroup variant="text" color="inherit" aria-label="text button group">
       {props.Links.map((link: any) => {
         return (
           <Link href={link.href} key={link} className="">
