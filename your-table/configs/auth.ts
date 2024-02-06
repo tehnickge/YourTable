@@ -25,7 +25,7 @@ export const authOptions : AuthOptions = {
                 password: { 
                     label: "Password",
                     type: "password",
-                    placeholder: "enter your password",
+                    placeholder: "Enter your password",
                     required: true
                 },
             },

@@ -10,15 +10,20 @@ export default function RestCard(props: any) {
   return (
     <Card sx={{ position: 3, }} variant="elevation">
       <Link href={`restaurants/${props.resData.id}`}>
-       <CardActionArea>
+       <CardActionArea sx={{
+        height: [`100%`],
+        backgroundColor: [`rgb(230,243,251)`],
+        background: [`radial-gradient(circle, rgba(230,243,251,0.4766281512605042) 0%, rgba(248,229,255,0.4766281512605042) 100%)`]
+      }}>
         <CardMedia
           component="img"
-          height="140"
+          height="1400"
+          width="140"
           image={props.resData?.photos[0]}
           alt="green iguana"
           
         />
-        <CardContent>
+        <CardContent className=" h-full">
           <Typography gutterBottom variant="h4" component="div">
           {props.resData?.title}
           </Typography>
@@ -28,7 +33,6 @@ export default function RestCard(props: any) {
           <RestCardInfo resData={props.resData}></RestCardInfo>
         </CardContent>
       </CardActionArea>
-       
       </Link>
     </Card>
   );

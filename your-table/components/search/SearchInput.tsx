@@ -20,8 +20,6 @@ import { Kitchen } from "@prisma/client";
 export default function SearchInput(props: any) {
   const searchInput = useSearchInput((state: any) => state.searchInput);
   const setSearchInput = useSearchInput((state: any) => state.setSearchInput);
-  const filterStars = useSearchInput((state: any) => state.filterStars);
-  const setFilterStars = useSearchInput((state: any) => state.setFilterStars);
   const filterKitchens = useSearchInput((state: any) => state.filterKitchens);
   const addFilterKitchens = useSearchInput(
     (state: any) => state.addFilterKitchens
@@ -32,7 +30,6 @@ export default function SearchInput(props: any) {
   const fetchRestaurants = useSearchInput(
     (state: any) => state.fetchRestaurants
   );
-  const restaurants = useSearchInput((state: any) => state.restaurants);
   const filteredRest = useSearchInput(
     (state: any) => state.filteredRestautants
   );
@@ -56,11 +53,6 @@ export default function SearchInput(props: any) {
   useEffect(() => {
     filteredRest;
   }, [filterKitchens, searchInput]);
-
-  // console.log(filterKitchens);
-  // console.log(searchInput);
-  // console.log(filterStars);
-  // console.log(restaurants);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/restaurants/kitchens")
@@ -159,12 +151,17 @@ export default function SearchInput(props: any) {
             return (
               <MenuItem key={kitchen.id}>
                 <label htmlFor="filter1">
-                  <Checkbox
+                { (!filterKitchens.includes(kitchen.type)) ? (<Checkbox
                     id={`${kitchen.id}`}
                     onChange={CheckBoxChangeHandler}
                     value={kitchen.type}
-                  ></Checkbox>
-                  {kitchen.type}
+                  ></Checkbox>) : (<Checkbox
+                    id={`${kitchen.id}`}
+                    onChange={CheckBoxChangeHandler}
+                    value={kitchen.type}
+                    checked
+                  ></Checkbox>) }
+                  {kitchen.type} 
                 </label>
               </MenuItem>
             );

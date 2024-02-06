@@ -2,20 +2,11 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useSearchInput } from "../store/StoreSearch";
 import RestCard from "./RestCard";
+import { Height } from "@mui/icons-material";
 
 export default function RestContainer(props: any) {
   const searchInput = useSearchInput((state: any) => state.searchInput);
-  const setSearchInput = useSearchInput((state: any) => state.setSearchInput);
-  const filterStars = useSearchInput((state: any) => state.filterStars);
-  const setFilterStars = useSearchInput((state: any) => state.setFilterStars);
   const filterKitchens = useSearchInput((state: any) => state.filterKitchens);
-  const addFilterKitchens = useSearchInput(
-    (state: any) => state.addFilterKitchens
-  );
-  const deleteFilterKitchens = useSearchInput(
-    (state: any) => state.deleteFilterKitchens
-  );
-
   const filterByKitchen = (item: any) => {
     return (
       filterKitchens.length === 0 ||
