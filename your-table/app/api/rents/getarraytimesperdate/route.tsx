@@ -56,8 +56,7 @@ export async function POST(req: Request) {
         || body.slotId === null
         ) 
     { return NextResponse.json({"error" : "bad data"})}
-    const toDay = moment.utc().format("YYYY-MM-DD");
-    if(moment.utc(body.date, "YYYY-MM-DD").isBefore(toDay)) { return NextResponse.json({"error" : "bad date"}) };
+    if(moment.utc(body.startDate, "YYYY-MM-DD").isBefore(dateNow)) { return NextResponse.json({"error" : "bad date"}) };
     if(moment.utc(body.timeStart, "HHmm").isAfter(moment.utc(body.timeEnd,"HHmm"))) { return NextResponse.json({"error" : "bad schedule"})}
 
     const restaurants = await prisma.restaurant.findMany({
