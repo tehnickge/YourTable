@@ -3,6 +3,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  Link,
   Paper,
   Stack,
   TextField,
@@ -110,8 +111,9 @@ export default function NewUser() {
                 })}
               />
               <Button variant="contained" color="success" type="submit">
-                create new user
+                создать пользователя
               </Button>
+              <Link href="http://localhost:3000/api/auth/signin">или войти</Link>
             </Stack>
           </form>
         )}

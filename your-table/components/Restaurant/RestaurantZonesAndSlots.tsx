@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Fab, Icon, Paper, Typography } from "@mui/material";
+import { Button, Fab, Icon, Link, Paper, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Slot, Zone } from "@prisma/client";
 import { PropsWithChildren, useEffect, useState } from "react";
@@ -133,10 +133,6 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
     setSelectedTimeEnd(null);
   }, [selectedTimeBegin]);
 
-  console.log(selectedSlot);
-  console.log(selectedTimeBegin);
-  console.log(selectedTimeEnd);
-  console.log(startDate);
   return (
     <Grid2
       sx={{
@@ -237,6 +233,7 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
                 );
               })}
             </Grid2>
+            {user.status === "unauthenticated" && <Link href="http://localhost:3000/users/new"><Typography sx={{margin: "1rem"}} variant="h6">Зарегистрируйтесь или войдите в аккаунт</Typography></Link>}
             <Grid2
               sx={{
                 display: "flex",
@@ -260,7 +257,6 @@ export default function RestaurantZonesAndSlots(props: PropsWithChildren) {
                 <AddCircleOutlineIcon />
                 Забронировать
               </Fab>
-              {user.status === "unauthenticated" && <Typography>Зарегистрируйтесь или войдите в аккаунт</Typography>}
             </Grid2>
           </Paper>
         ))}
