@@ -14,35 +14,37 @@ type Body = {
 
 export async function POST(req: Request) {
     const body : Body = await req.json()
-    if (body.restaurantId === null 
-        || body.slotId === null 
-        || body.timeBegin === null 
-        || body.timeEnd === null 
-        || body.restaurantId === null 
-        || body.userId === null ) 
-    { return NextResponse.json({"error": "bad data"})}
+    if (body.restaurantId === undefined || null
+        || body.slotId === undefined || null
+        || body.timeBegin === undefined || null
+        || body.timeEnd === undefined || null
+        || body.restaurantId === undefined || null
+        || body.userId === undefined || null) 
+    { return await NextResponse.json({"error": "bad data"})}
 
-    const restaurants = await prisma.restaurant.findMany({
-        where: {
-            id: body.restaurantId,
-            zones: {
-                some: {
-                    slots: {
-                        some:
-                        {
-                            id: body.slotId
+    try {
+        const restaurants = await prisma.restaurant.findMany({
+            where: {
+                id: body.restaurantId,
+                zones: {
+                    some: {
+                        slots: {
+                            some:
+                            {
+                                id: body.slotId
+                            }
                         }
                     }
                 }
+                
             }
-            
-        }
-    })
-    if (restaurants.length === 0) {return NextResponse.json({"error" : "bad id restaurant or slotsID"})}
-
+        })
+        if (restaurants.length === 0) {return NextResponse.json({"error" : "bad id restaurant or slotsID"})}
+    } catch{ return NextResponse.json({"error" : "bad id restaurant or slotsID"})}
+     
     const toDay = moment.utc().format("YYYY-MM-DD");
     if(moment.utc(body.startDate, "YYYY-MM-DD").isBefore(toDay)) { return NextResponse.json({"error" : "bad date"}) };
-    
+
     const dateStart = moment([body.startDate, body.timeBegin], "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss.SSS")
     const dateEnd = moment([body.startDate, body.timeEnd], "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss.SSS")
 

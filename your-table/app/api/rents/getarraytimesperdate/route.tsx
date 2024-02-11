@@ -49,11 +49,11 @@ export async function POST(req: Request) {
     const body = await req.json()
     const dateNow = moment().format("YYYY-MM-DD");
     if(moment(body.startDate, "YYYY-MM-DD").isBefore(dateNow)) { return NextResponse.json({"error" : "not valid date"})};
-    if(body.timeStart === null 
-        || body.timeEnd === null 
-        || body.date === null 
-        || body.restId === null 
-        || body.slotId === null
+    if(body.timeStart === undefined || null 
+        || body.timeEnd === undefined || null 
+        || body.date === undefined || null 
+        || body.restId === undefined || null 
+        || body.slotId === undefined || null
         ) 
     { return NextResponse.json({"error" : "bad data"})}
     if(moment.utc(body.startDate, "YYYY-MM-DD").isBefore(dateNow)) { return NextResponse.json({"error" : "bad date"}) };
