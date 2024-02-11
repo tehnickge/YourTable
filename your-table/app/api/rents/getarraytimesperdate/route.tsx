@@ -3,8 +3,6 @@ import moment from "moment";
 import { NextResponse } from "next/server";
 
 const generateTimeArray = async(timeStart : any, timeEnd : any, date: any, restId : any, slotId : any) => {
-    if(moment.utc(timeStart, "HHmm").isAfter(moment.utc(timeEnd,"HHmm"))) { return NextResponse.json({"error" : "bad schedule"})}
-
     //all rents 
     const RentPerDay = await prisma.rent.findMany({
        where: {
@@ -51,6 +49,34 @@ export async function POST(req: Request) {
     const body = await req.json()
     const dateNow = moment().format("YYYY-MM-DD");
     if(moment(body.startDate, "YYYY-MM-DD").isBefore(dateNow)) { return NextResponse.json({"error" : "not valid date"})};
+    if(body.timeStart === null 
+        || body.timeEnd === null 
+        || body.date === null 
+        || body.restId === null 
+        || body.slotId === null
+        ) 
+    { return NextResponse.json({"error" : "bad data"})}
+    const toDay = moment.utc().format("YYYY-MM-DD");
+    if(moment.utc(body.date, "YYYY-MM-DD").isBefore(toDay)) { return NextResponse.json({"error" : "bad date"}) };
+    if(moment.utc(body.timeStart, "HHmm").isAfter(moment.utc(body.timeEnd,"HHmm"))) { return NextResponse.json({"error" : "bad schedule"})}
+
+    const restaurants = await prisma.restaurant.findMany({
+        where: {
+            id: body.restId,
+            zones: {
+                some: {
+                    slots: {
+                        some:
+                        {
+                            id: body.slotId
+                        }
+                    }
+                }
+            }
+            
+        }
+    })
+    if (restaurants.length === 0) {return NextResponse.json({"error" : "bad id restaurant or slotsID"})}
 
     const restaurant = await prisma.restaurant.findUnique({
         where: {
