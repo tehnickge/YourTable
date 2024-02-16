@@ -15,7 +15,7 @@ export async function POST(req: Request) {
             type: true
         }
     })
-    if(check) { return NextResponse.json(null, { status: 404 });}
+    if(check) { return NextResponse.json(null, { status: 404,  });}
     const user = await prisma.user.create({
         data: {
             name: cName,

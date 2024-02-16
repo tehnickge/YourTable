@@ -24,7 +24,7 @@ export async function GET(req: Request, { params }: {params: { id: string }}) {
       select: {
         id: true,
         name: true,
-        password: true,
+        password: false,
         photo: true,
         type: true,
         createdAt: true

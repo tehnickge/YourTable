@@ -49,13 +49,7 @@ export async function POST(req: Request) {
     const body = await req.json()
     const dateNow = moment().format("YYYY-MM-DD");
     if(moment(body.startDate, "YYYY-MM-DD").isBefore(dateNow)) { return NextResponse.json({"error" : "not valid date"})};
-    if(body.timeStart === undefined || null 
-        || body.timeEnd === undefined || null 
-        || body.date === undefined || null 
-        || body.restId === undefined || null 
-        || body.slotId === undefined || null
-        ) 
-    { return NextResponse.json({"error" : "bad data"})}
+   
     if(moment.utc(body.startDate, "YYYY-MM-DD").isBefore(dateNow)) { return NextResponse.json({"error" : "bad date"}) };
     if(moment.utc(body.timeStart, "HHmm").isAfter(moment.utc(body.timeEnd,"HHmm"))) { return NextResponse.json({"error" : "bad schedule"})}
 
